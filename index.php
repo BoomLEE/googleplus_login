@@ -8,10 +8,10 @@ require_once __DIR__.'/vendor/autoload.php';
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-const CLIENT_ID = '115044647580-26nlge7fdmt41gcua22bhceu9iveeo00.apps.googleusercontent.com';
-const CLIENT_SECRET = 'MWslEFgnP3hSckpwOk-ndjbj';
-const APPLICATION_NAME = "WorkingCareer";
-const TOP_PAGE_URL = "https://new.workin-career.jp/login/gplus_test/gplus-quickstart-php/index.php";
+const CLIENT_ID = '####################';
+const CLIENT_SECRET = '#####################';
+const APPLICATION_NAME = "w****c***r";
+const TOP_PAGE_URL = "https://new.w****-****r.jp/login/gplus_test/gplus-quickstart-php/index.php";
 //https://console.developers.google.com->承認済みのリダイレクト URIと一致させないと権限エラーが発生する。
 
 $client = new Google_Client();
