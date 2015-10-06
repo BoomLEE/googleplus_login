@@ -25,8 +25,6 @@ $client->setScopes(array(
         'https://www.googleapis.com/auth/userinfo.profile',
     ));
     
-$plus = new Google_Service_Plus($client);
-
 session_start();
 if (isset($_GET['code'])) {
     // https://developers.google.com/api-client-library/php/auth/web-app?hl=ja
@@ -34,21 +32,23 @@ if (isset($_GET['code'])) {
     $client->authenticate($_GET['code']);
     $_SESSION['access_token'] = $client->getAccessToken();
     $token = json_decode($client->getAccessToken());
-    header('Location: ' . filter_var(TOP_PAGE_URL, FILTER_SANITIZE_URL));
+    header('Location: ' . TOP_PAGE_URL);
 }
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token'] !="") {
     $client->setAccessToken($_SESSION['access_token']);
-    $token_data = $client->verifyIdToken()->getAttributes();
-    $people = $plus->people->get('me');
+    $oauth2 = new \Google_Service_Oauth2($client);
+    $userInfo = $oauth2->userinfo->get();
+    
 } else {
     $authUrl = $client->createAuthUrl();
+    
 }
 
 //ログアウトするときにはaccess_tokenをunsetする
 if (isset($_REQUEST['logout'])) {
   unset($_SESSION['access_token']);
-  header('Location: ' . filter_var(TOP_PAGE_URL, FILTER_SANITIZE_URL));
+  header('Location: ' . TOP_PAGE_URL);
 }
 
 if (isset($authUrl)) {
@@ -58,8 +58,14 @@ if (isset($authUrl)) {
     login ok
     <a class='logout' href='?logout'>Logout</a>
 END;
-if (isset($token_data)) {
-  echo "<pre>";var_dump($people);echo "</pre>";
+if (isset($userInfo)) {
+    echo $userInfo->id;
+    echo $userInfo->familyName;
+    echo $userInfo->givenName;
+    echo $userInfo->gender;
+    echo $userInfo->email;
+    echo $userInfo->picture;
+
 }
 }
 exit;
